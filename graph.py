@@ -3,6 +3,23 @@ import numpy as np
 
 class Graph(dict):
 
+
+    def get_path(self):
+        return
+    
+    def nearest_point(self,point):
+        nearest =None
+        distance=float('inf')
+        # for all the points in the graph find if the current distance is the smallest
+        for k in self:
+            if Graph.distance_point(point,k)<distance:
+                nearest=k
+                distance=Graph.distance_point(point,k)
+        return nearest
+    #
+    #
+    #
+    #You can clean/change some of these methods if needed
     @staticmethod
     def createEnvironment(filename):
         f=open(filename,"r")
@@ -67,3 +84,21 @@ class Graph(dict):
             if i[index]<small:
                 small=i[index]
         return small
+    
+    @staticmethod
+    def in_obstacle(grid,position,radius):
+        return 1 in grid[int(position[0]-radius*4):int(position[0]+radius*4),int(position[1]-radius*4):int(position[1]+radius*4)]
+    
+    @staticmethod
+    def clear_path(grid,point1,point2,radius):
+            #get 100 points along the line and test if they are all obstacle free
+        for i in range(100):
+            x=point1[0]+i/100*(point2[0]-point1[0])
+            y=point1[1]+i/100*(point2[1]-point1[1])
+            if Graph.in_obstacle(grid,(x,y),radius):
+                return False
+        return True
+    
+    @staticmethod
+    def distance_point(point1,point2):
+        return((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)**.5
