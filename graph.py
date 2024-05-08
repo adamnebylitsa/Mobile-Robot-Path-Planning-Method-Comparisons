@@ -2,8 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Graph(dict):
-
-
+    def __init__(self, start_point = None):
+        if start_point:
+            self[start_point] = []
+            self["parents"] = {start_point:None}
+        
     def get_path(self, start_point, end_point):
         path = [end_point]
         current_point = end_point
@@ -36,23 +39,36 @@ class Graph(dict):
     #
     #You can clean/change some of these methods if needed
 
-    def showGraph(self, path, ax):
+    def showGraph(self, path = None, ax = None, node_color = 'go',show= False):
+        if not ax:
+            fig, ax = plt.subplots()
+        
+
         keys = list(self.keys())
         for k in keys:
             if k == "parents":
                 continue
             for x2,y2 in self[k]:
                 ax.plot([k[0]*4, x2*4], [k[1]*4, y2*4], 'k')
-            ax.plot(k[0]*4, k[1]*4, 'go')
+            ax.plot(k[0]*4, k[1]*4, node_color)
         
-        for i in range(len(path)):
-            path[i] = (path[i][0] *4, path[i][1]*4)
-        
-        x,y = zip(*path)
-        ax.plot(x, y, 'r-', linewidth=2, label = 'Path')  # Red line for the path
-        ax.legend()
-        plt.show()
-        return
+        if path:
+            for i in range(len(path)):
+                path[i] = (path[i][0] *4, path[i][1]*4)
+            
+            
+            x,y = zip(*path)
+            ax.plot(x, y, 'r-', linewidth=2, label = 'Path')  # Red line for the path
+            ax.legend()
+        if show:
+            plt.show()
+        return ax
+    
+    @staticmethod
+    def joinGraphs(graph_1, graph_2):
+        merged_graph = Graph()
+        return merged_graph
+    
     @staticmethod
     def createEnvironment(filename):
         f=open(filename,"r")

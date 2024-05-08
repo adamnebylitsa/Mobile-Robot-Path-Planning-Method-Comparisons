@@ -1,20 +1,18 @@
 from graph import Graph
 import numpy as np
 from numpy import random
+import matplotlib.pyplot as plt
 
 def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_number = 500):
     # initialize graph
-    graph=Graph()
-    graph[start_point]=[]
-    graph["parents"] = {start_point:None}
-
+    graph=Graph(start_point=start_point)
+    
     path_found = False
     path = None
 
     grid_shape=environment_grid.shape
-    valuesX=np.linspace(0,grid_shape[0]/4,grid_shape[0]+1)
-    valuesY=np.linspace(0,grid_shape[1]/4,grid_shape[1]+1)
-
+    valuesX=np.linspace(robot_radius,(grid_shape[0] -robot_radius)/4,grid_shape[0]+1)
+    valuesY=np.linspace(robot_radius,(grid_shape[1]-robot_radius)/4,grid_shape[1]+1)
 
     while len(graph)<iteration_number:
         new_position = (random.choice(valuesX),random.choice(valuesY))
@@ -45,12 +43,12 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env = Graph.createEnvironment("environments/environment3.txt")
+    env = Graph.createEnvironment("environments/environment4.txt")
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
     end=(28,28)
     radius=.5
     graph, path =plan_path(start,end,radius,grid, 500)
     print(path)
-    graph.showGraph(path, ax)
+    graph.showGraph(path, ax, show=True)
     # print(graph)
