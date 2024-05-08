@@ -16,7 +16,6 @@ class Graph(dict):
             current_point = parent
         
         path.reverse()
-        print("in func: ",path)
         return path
     
     def nearest_point(self,point):
@@ -42,7 +41,16 @@ class Graph(dict):
         for k in keys:
             if k == "parents":
                 continue
+            for x2,y2 in self[k]:
+                ax.plot([k[0]*4, x2*4], [k[1]*4, y2*4], 'k')
             ax.plot(k[0]*4, k[1]*4, 'go')
+        
+        for i in range(len(path)):
+            path[i] = (path[i][0] *4, path[i][1]*4)
+        
+        x,y = zip(*path)
+        ax.plot(x, y, 'r-', linewidth=2, label = 'Path')  # Red line for the path
+        ax.legend()
         plt.show()
         return
     @staticmethod
@@ -65,7 +73,7 @@ class Graph(dict):
                     points.append([float(temp[0]),float(temp[1])])
                 polygon.append(points)
         f.close()
-        print(polygon)
+        # print(polygon)
         return (environment,polygon)
     
     @staticmethod

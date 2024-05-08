@@ -50,7 +50,7 @@ if __name__=="__main__":
     start=(1,1)
     end=(28,28)
     radius=.5
-    graph, path =plan_path(start,end,radius,grid, 2000)
+    graph, path =plan_path(start,end,radius,grid, 500)
+    print(path)
     graph.showGraph(path, ax)
     # print(graph)
-    print(path)
