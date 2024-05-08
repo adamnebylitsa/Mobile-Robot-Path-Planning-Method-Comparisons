@@ -12,6 +12,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     end_graph = Graph(start_point=end_point)
     
     path_found = False
+    merge_point = None
     path = None
 
     grid_shape=environment_grid.shape
@@ -41,6 +42,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
                     alternate_graph[new_position] = []
                     alternate_graph["parents"][new_position] = alternate_nearest
                 alternate_graph[new_position].append(alternate_nearest)
+                merge_point = new_position
                 path_found = True
                 break
                 
@@ -48,23 +50,25 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
             current_graph = start_graph if current_graph is not start_graph else end_graph
             
     if path_found:
-        merged_graph = Graph.joinGraphs(start_graph, end_graph)
-        # path = merged_graph.get_path(start_point, end_point)
-    print (start_graph)
-    print ('...................................')
-    print(end_graph)
-    fig,ax = plt.subplots()
-    end_graph.showGraph(node_color='ro', ax=ax)
-    start_graph.showGraph(ax =ax, node_color='go')
-    plt.show()
-    return merged_graph, path
+        path = Graph.joinGraphs(start_graph, end_graph, start_point, end_point, merge_point)
+    
+    # fig,ax = plt.subplots()
+    # end_graph.showGraph(node_color='ro', ax=ax)
+    # start_graph.showGraph(ax =ax, node_color='go')
+    # plt.show()
+    return start_graph, end_graph, path, path_found
 
 if __name__=="__main__":
-    env = Graph.createEnvironment("environments/environment4.txt")
+    env = Graph.createEnvironment("environments/environment1.txt")
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
     end=(28,28)
     radius=.5
-    graph, path =plan_path(start,end,radius,grid, 500)
-    # graph.showGraph(path, ax)
+    num_iterations = 500
+    start_graph, end_graph, path, path_found =plan_path(start,end,radius,grid, num_iterations)
+    if not path_found:
+        print(f'No path found after {num_iterations} iterations')
+    start_graph.showGraph(ax =ax, show=False, node_color = 'go')
+    end_graph.showGraph(path, ax, show=True, node_color= 'bo')
+
     # print(graph)

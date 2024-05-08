@@ -7,6 +7,9 @@ class Graph(dict):
             self[start_point] = []
             self["parents"] = {start_point:None}
         
+        else:
+            self["parents"]={}
+        
     def get_path(self, start_point, end_point):
         path = [end_point]
         current_point = end_point
@@ -34,10 +37,6 @@ class Graph(dict):
                 nearest=k
                 distance=Graph.distance_point(point,k)
         return nearest
-    #
-    #
-    #
-    #You can clean/change some of these methods if needed
 
     def showGraph(self, path = None, ax = None, node_color = 'go',show= False):
         if not ax:
@@ -65,8 +64,52 @@ class Graph(dict):
         return ax
     
     @staticmethod
-    def joinGraphs(graph_1, graph_2):
+    def joinGraphs(start_graph, end_graph, start_point, end_point, merge_point):
+        # start at merge_point, go to start
+        start_to_merge_path = [merge_point]
+        current_point = merge_point
+        
+        while current_point != start_point:
+            parent = start_graph['parents'][current_point]
+            start_to_merge_path.append(parent)
+            current_point = parent
+
+        # start at merge, go to end
+        end_to_merge_path = []
+        current_point = merge_point
+        while current_point != end_point:
+            parent = end_graph['parents'][current_point]
+            end_to_merge_path.append(parent)
+            current_point = parent
+
+        start_to_merge_path.reverse()
+        path = start_to_merge_path + end_to_merge_path
+        return path
+    # Im not sure if we want the two merged graphs for any reason. 
+    # If we do, I will fix the code below, otherwise delete later
         merged_graph = Graph()
+        # go backwards from merge point in both graphs and add them to the new graph
+        while start_graph['parents'][current_point] is not None:
+            parent = start_graph['parents'][current_point]
+            merged_graph[current_point] = start_graph[current_point]
+            merged_graph['parents'][current_point] = parent
+
+            current_point = parent
+        
+        merged_graph[parent] =  start_graph[parent]
+        merged_graph['parents'][parent] = None
+
+        current_point = end_graph['parents'][merge_point]
+        while end_graph['parents'][current_point] is not None:
+            parent = end_graph['parents'][current_point]
+            merged_graph[current_point] = end_graph[current_point]
+            merged_graph['parents'][current_point] = parent
+
+            current_point = parent
+        
+        merged_graph[parent] = end_graph[parent]
+        merged_graph['parents'][parent] = None
+
         return merged_graph
     
     @staticmethod
