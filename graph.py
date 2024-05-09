@@ -2,8 +2,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Graph(dict):
-
-
+    def __init__(self, start_point = None):
+        if start_point:
+            self[start_point] = []
+            self["parents"] = {start_point:None}
+        
+        else:
+            self["parents"]={}
+        
     def get_path(self, start_point, end_point):
         path = [end_point]
         current_point = end_point
@@ -16,7 +22,6 @@ class Graph(dict):
             current_point = parent
         
         path.reverse()
-        print("in func: ",path)
         return path
     
     def nearest_point(self,point,ignore=[]):
@@ -32,19 +37,81 @@ class Graph(dict):
                 nearest=k
                 distance=Graph.distance_point(point,k)
         return nearest
-    #
-    #
-    #
-    #You can clean/change some of these methods if needed
 
-    def showGraph(self, path, ax):
+    def showGraph(self, path = None, ax = None, node_color = 'go',show= False):
+        if not ax:
+            fig, ax = plt.subplots()
+        
+
         keys = list(self.keys())
         for k in keys:
             if k == "parents":
                 continue
-            ax.plot(k[0], k[1], 'go')
-        plt.show()
-        return
+            for x2,y2 in self[k]:
+                ax.plot([k[0]*4, x2*4], [k[1]*4, y2*4], 'k')
+            ax.plot(k[0]*4, k[1]*4, node_color)
+        
+        if path:
+            for i in range(len(path)):
+                path[i] = (path[i][0] *4, path[i][1]*4)
+            
+            
+            x,y = zip(*path)
+            ax.plot(x, y, 'r-', linewidth=2, label = 'Path')  # Red line for the path
+            ax.legend()
+        if show:
+            plt.show()
+        return ax
+    
+    @staticmethod
+    def joinGraphs(start_graph, end_graph, start_point, end_point, merge_point):
+        # start at merge_point, go to start
+        start_to_merge_path = [merge_point]
+        current_point = merge_point
+        
+        while current_point != start_point:
+            parent = start_graph['parents'][current_point]
+            start_to_merge_path.append(parent)
+            current_point = parent
+
+        # start at merge, go to end
+        end_to_merge_path = []
+        current_point = merge_point
+        while current_point != end_point:
+            parent = end_graph['parents'][current_point]
+            end_to_merge_path.append(parent)
+            current_point = parent
+
+        start_to_merge_path.reverse()
+        path = start_to_merge_path + end_to_merge_path
+        return path
+    # Im not sure if we want the two merged graphs for any reason. 
+    # If we do, I will fix the code below, otherwise delete later
+        merged_graph = Graph()
+        # go backwards from merge point in both graphs and add them to the new graph
+        while start_graph['parents'][current_point] is not None:
+            parent = start_graph['parents'][current_point]
+            merged_graph[current_point] = start_graph[current_point]
+            merged_graph['parents'][current_point] = parent
+
+            current_point = parent
+        
+        merged_graph[parent] =  start_graph[parent]
+        merged_graph['parents'][parent] = None
+
+        current_point = end_graph['parents'][merge_point]
+        while end_graph['parents'][current_point] is not None:
+            parent = end_graph['parents'][current_point]
+            merged_graph[current_point] = end_graph[current_point]
+            merged_graph['parents'][current_point] = parent
+
+            current_point = parent
+        
+        merged_graph[parent] = end_graph[parent]
+        merged_graph['parents'][parent] = None
+
+        return merged_graph
+    
     @staticmethod
     def createEnvironment(filename):
         f=open(filename,"r")
@@ -65,7 +132,7 @@ class Graph(dict):
                     points.append([float(temp[0]),float(temp[1])])
                 polygon.append(points)
         f.close()
-        #print(polygon)
+        # print(polygon)
         return (environment,polygon)
     
     @staticmethod
