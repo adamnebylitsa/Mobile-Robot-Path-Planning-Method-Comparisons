@@ -6,9 +6,7 @@ from numpy import random
 
 def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_number = 500,attempts=10):
     # initialize graph
-    graph=Graph()
-    graph[start_point]=[0,[]]
-    graph["parents"] = {start_point:None}
+    graph=Graph(start_point=start_point)
 
     path_found = False
     path = None
@@ -56,11 +54,11 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
 
             # check if clear path from most recent point to end point
             if Graph.clear_path(environment_grid, end_point, new_position, robot_radius):
-                graph[new_position].append(end_point)
+                graph[new_position][1].append(end_point)
                 if end_point not in graph:
-                    graph[end_point] = []
+                    graph[end_point] = [0,[]]
                     graph["parents"][end_point] = new_position
-                graph[end_point].append(new_position)
+                graph[end_point][1].append(new_position)
                 path_found = True
                 break
             
@@ -75,7 +73,7 @@ if __name__=="__main__":
     start=(20,20)
     end=(28,28)
     radius=.5
-    graph, path =plan_path(start,end,radius,grid, 2000,20)
-    graph.showGraph(path, ax)
+    graph, path =plan_path(start,end,radius,grid, 500,10)
+    graph.showGraph(path, ax,show=True)
     #print(graph)
     print(path)

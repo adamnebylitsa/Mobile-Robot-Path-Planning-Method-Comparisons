@@ -4,7 +4,7 @@ import numpy as np
 class Graph(dict):
     def __init__(self, start_point = None):
         if start_point:
-            self[start_point] = []
+            self[start_point] = [0,[]]
             self["parents"] = {start_point:None}
         
         else:
@@ -47,13 +47,13 @@ class Graph(dict):
         for k in keys:
             if k == "parents":
                 continue
-            for x2,y2 in self[k]:
-                ax.plot([k[0]*4, x2*4], [k[1]*4, y2*4], 'k')
-            ax.plot(k[0]*4, k[1]*4, node_color)
+            for x2,y2 in self[k][1]:
+                ax.plot([k[0], x2], [k[1], y2], 'k')
+            ax.plot(k[0], k[1], node_color)
         
         if path:
             for i in range(len(path)):
-                path[i] = (path[i][0] *4, path[i][1]*4)
+                path[i] = (path[i][0] , path[i][1])
             
             
             x,y = zip(*path)
