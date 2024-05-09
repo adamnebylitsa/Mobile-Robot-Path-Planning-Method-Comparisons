@@ -19,7 +19,7 @@ class Graph(dict):
         print("in func: ",path)
         return path
     
-    def nearest_point(self,point):
+    def nearest_point(self,point,ignore=[]):
         nearest =None
         distance=float('inf')
         # for all the points in the graph find if the current distance is the smallest
@@ -28,7 +28,7 @@ class Graph(dict):
         for k in keys:
             if k == "parents":
                 continue
-            if Graph.distance_point(point,k)<distance:
+            if k not in ignore and Graph.distance_point(point,k)<distance:
                 nearest=k
                 distance=Graph.distance_point(point,k)
         return nearest
@@ -42,7 +42,7 @@ class Graph(dict):
         for k in keys:
             if k == "parents":
                 continue
-            ax.plot(k[0]*4, k[1]*4, 'go')
+            ax.plot(k[0], k[1], 'go')
         plt.show()
         return
     @staticmethod
@@ -65,7 +65,7 @@ class Graph(dict):
                     points.append([float(temp[0]),float(temp[1])])
                 polygon.append(points)
         f.close()
-        print(polygon)
+        #print(polygon)
         return (environment,polygon)
     
     @staticmethod
@@ -82,7 +82,7 @@ class Graph(dict):
         # print(grid)
         
         fig, ax = plt.subplots()
-        ax.imshow(grid.T, cmap='Greys', origin='lower', extent=[0, environment[0][0]*4, 0, environment[0][1]*4])
+        ax.imshow(grid.T, cmap='Greys', origin='lower', extent=[0, environment[0][0], 0, environment[0][1]])
         ax.set_xlabel('X coordinate')
         ax.set_ylabel('Y coordinate')
 
