@@ -10,7 +10,7 @@ class Graph(dict):
         else:
             self["parents"]={}
         
-    def get_path(self, start_point, end_point):
+    def get_path(self, start_point, end_point, local_bias=False):
         path = [end_point]
         current_point = end_point
 
@@ -22,7 +22,10 @@ class Graph(dict):
             current_point = parent
         
         path.reverse()
-        return path
+        if not local_bias:
+            return path
+
+        
     
     def nearest_point(self,point):
         nearest =None
@@ -136,7 +139,7 @@ class Graph(dict):
         return (environment,polygon)
     
     @staticmethod
-    def occupancyGrid(environment, show = False):
+    def occupancyGrid(environment, show = False, block=False):
         grid=np.zeros([int(environment[0][0]*4),int(environment[0][1]*4)])
         for poly in environment[1]:
             minX=Graph.min_list(poly,0)
@@ -155,7 +158,7 @@ class Graph(dict):
 
         if show:
             ax.set_title('2D Occupancy Grid')
-            plt.show()
+            plt.show(block=block)
             
         return grid, ax
 
@@ -193,9 +196,6 @@ class Graph(dict):
     
     @staticmethod
     def in_obstacle(grid,position,radius):
-        # if 1 in grid[int((position[0]-radius)*4):int((position[0]+radius)*4),
-        #                  int((position[1]-radius)*4):int((position[1]+radius)*4)]:
-            # print(position)
         return 1 in grid[int((position[0]-radius)*4):int((position[0]+radius)*4),
                          int((position[1]-radius)*4):int((position[1]+radius)*4)]
     
@@ -215,3 +215,4 @@ class Graph(dict):
     @staticmethod
     def distance_point(point1,point2):
         return((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)**.5
+    

@@ -51,24 +51,24 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
             
     if path_found:
         path = Graph.joinGraphs(start_graph, end_graph, start_point, end_point, merge_point)
-    
-    # fig,ax = plt.subplots()
-    # end_graph.showGraph(node_color='ro', ax=ax)
-    # start_graph.showGraph(ax =ax, node_color='go')
-    # plt.show()
+
     return start_graph, end_graph, path, path_found
 
 if __name__=="__main__":
-    env = Graph.createEnvironment("environments/environment1.txt")
+    env_file = "environments/environment5.txt"
+    env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
+    env_num = env_name[-1]
+
+    env = Graph.createEnvironment(env_file)
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
-    end=(28,28)
+    end=(20,10)
     radius=.5
     num_iterations = 500
     start_graph, end_graph, path, path_found =plan_path(start,end,radius,grid, num_iterations)
     if not path_found:
         print(f'No path found after {num_iterations} iterations')
+
+    ax.set_title(env_name.upper()[:-1] + " " + env_num)
     start_graph.showGraph(ax =ax, show=False, node_color = 'go')
     end_graph.showGraph(path, ax, show=True, node_color= 'bo')
-
-    # print(graph)
