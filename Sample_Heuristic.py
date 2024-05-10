@@ -10,6 +10,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
 
     path_found = False
     path = None
+    graph = None    
     already_tried=[]
 
     grid_shape=environment_grid.shape
@@ -63,12 +64,12 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
                 break
             
     if path_found:
-        path = graph.get_path(start_point, end_point)
+        path, distance = graph.get_path(start_point, end_point)
     
     return graph, path
 
 if __name__=="__main__":
-    env = Graph.createEnvironment("environments/environment3.txt")
+    env = Graph.createEnvironment("environments/environment1.txt")
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(20,20)
     end=(28,28)

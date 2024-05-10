@@ -14,14 +14,20 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     path_found = False
     merge_point = None
     path = None
-
+    
+    count = 0
     grid_shape=environment_grid.shape
     valuesX=np.linspace(robot_radius,(grid_shape[0] -robot_radius)/4,grid_shape[0]+1)
     valuesY=np.linspace(robot_radius,(grid_shape[1]-robot_radius)/4,grid_shape[1]+1)
 
     current_graph = start_graph
     while len(start_graph)<iteration_number or len(end_graph)<iteration_number:
+        count+=1
+        
         new_position = (random.choice(valuesX),random.choice(valuesY))
+        if count%100 == 0:
+            print("iteration count: {count}")
+
         if Graph.in_obstacle(environment_grid,new_position,robot_radius):
             continue
         nearest=current_graph.nearest_point(new_position)
@@ -55,14 +61,14 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return start_graph, end_graph, path, path_found
 
 if __name__=="__main__":
-    env_file = "environments/environment5.txt"
+    env_file = "environments/environment2.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
 
     env = Graph.createEnvironment(env_file)
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
-    end=(20,10)
+    end=(28,28)
     radius=.5
     num_iterations = 500
     start_graph, end_graph, path, path_found =plan_path(start,end,radius,grid, num_iterations)

@@ -43,12 +43,13 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env = Graph.createEnvironment("environments/environment4.txt")
+    env = Graph.createEnvironment("environments/environment2.txt")
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
     end=(28,28)
     radius=.5
     graph, path =plan_path(start,end,radius,grid, 500)
-    print(path)
+    # print(path)
+    print (Graph.getPathLength(path))
     graph.showGraph(path, ax, show=True)
     # print(graph)

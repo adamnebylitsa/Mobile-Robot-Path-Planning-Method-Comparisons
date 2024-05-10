@@ -13,7 +13,6 @@ class Graph(dict):
     def get_path(self, start_point, end_point, local_bias=False):
         path = [end_point]
         current_point = end_point
-
         while current_point != start_point:
             parent = self['parents'][current_point]
             if parent is None:
@@ -21,9 +20,12 @@ class Graph(dict):
             path.append(parent)
             current_point = parent
         
+
+        
         path.reverse()
         if not local_bias:
             return path
+
 
         
     
@@ -66,6 +68,12 @@ class Graph(dict):
             plt.show()
         return ax
     
+    @staticmethod 
+    def getPathLength(path):
+        distance = 0
+        for i in range(len(path) -1):
+            distance += Graph.distance_point(path[i], path[i+1])
+        return distance
     @staticmethod
     def joinGraphs(start_graph, end_graph, start_point, end_point, merge_point):
         # start at merge_point, go to start
