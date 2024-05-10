@@ -4,7 +4,7 @@ import numpy as np
 class Graph(dict):
     def __init__(self, start_point = None):
         if start_point:
-            self[start_point] = []
+            self[start_point] = [0,[]]
             self["parents"] = {start_point:None}
         
         else:
@@ -27,7 +27,7 @@ class Graph(dict):
 
         
     
-    def nearest_point(self,point):
+    def nearest_point(self,point,ignore=[]):
         nearest =None
         distance=float('inf')
         # for all the points in the graph find if the current distance is the smallest
@@ -36,7 +36,7 @@ class Graph(dict):
         for k in keys:
             if k == "parents":
                 continue
-            if Graph.distance_point(point,k)<distance:
+            if k not in ignore and Graph.distance_point(point,k)<distance:
                 nearest=k
                 distance=Graph.distance_point(point,k)
         return nearest
@@ -50,13 +50,13 @@ class Graph(dict):
         for k in keys:
             if k == "parents":
                 continue
-            for x2,y2 in self[k]:
-                ax.plot([k[0]*4, x2*4], [k[1]*4, y2*4], 'k')
-            ax.plot(k[0]*4, k[1]*4, node_color)
+            for x2,y2 in self[k][1]:
+                ax.plot([k[0], x2], [k[1], y2], 'k')
+            ax.plot(k[0], k[1], node_color)
         
         if path:
             for i in range(len(path)):
-                path[i] = (path[i][0] *4, path[i][1]*4)
+                path[i] = (path[i][0] , path[i][1])
             
             
             x,y = zip(*path)
@@ -152,7 +152,7 @@ class Graph(dict):
         # print(grid)
         
         fig, ax = plt.subplots()
-        ax.imshow(grid.T, cmap='Greys', origin='lower', extent=[0, environment[0][0]*4, 0, environment[0][1]*4])
+        ax.imshow(grid.T, cmap='Greys', origin='lower', extent=[0, environment[0][0], 0, environment[0][1]])
         ax.set_xlabel('X coordinate')
         ax.set_ylabel('Y coordinate')
 

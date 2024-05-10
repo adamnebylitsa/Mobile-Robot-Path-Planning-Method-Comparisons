@@ -27,21 +27,21 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
         nearest=current_graph.nearest_point(new_position)
         # Extending one graph
         if Graph.clear_path(environment_grid,new_position,nearest,robot_radius):
-            current_graph[nearest].append(new_position)
+            current_graph[nearest][1].append(new_position)
             if new_position not in current_graph:
-                current_graph[new_position]=[]
+                current_graph[new_position]=[0,[]]
                 current_graph['parents'][new_position] = nearest
-            current_graph[new_position].append(nearest)
+            current_graph[new_position][1].append(nearest)
 
             # Attempt to connect the other graph to the previously extended graph
             alternate_graph = end_graph if current_graph is start_graph else start_graph
             alternate_nearest = alternate_graph.nearest_point(new_position)
             if Graph.clear_path(environment_grid, new_position, alternate_nearest, robot_radius):
-                alternate_graph[alternate_nearest].append(new_position)
+                alternate_graph[alternate_nearest][1].append(new_position)
                 if new_position not in alternate_graph:
-                    alternate_graph[new_position] = []
+                    alternate_graph[new_position] = [0,[]]
                     alternate_graph["parents"][new_position] = alternate_nearest
-                alternate_graph[new_position].append(alternate_nearest)
+                alternate_graph[new_position][1].append(alternate_nearest)
                 merge_point = new_position
                 path_found = True
                 break
