@@ -70,7 +70,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env_file = "environments/environment4.txt"
+    env_file = "environments/environment5.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
 
