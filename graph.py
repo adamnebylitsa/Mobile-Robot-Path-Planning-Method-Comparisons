@@ -9,6 +9,9 @@ class Graph(dict):
         
         else:
             self["parents"]={}
+
+    def __len__(self):
+        return len(list(self.keys()))-1
         
     def get_path(self, start_point, end_point, local_bias=False):
         path = [end_point]
@@ -34,7 +37,6 @@ class Graph(dict):
         distance=float('inf')
         # for all the points in the graph find if the current distance is the smallest
         keys = list(self.keys())
-        
         for k in keys:
             if k == "parents":
                 continue
@@ -70,6 +72,9 @@ class Graph(dict):
     
     @staticmethod 
     def getPathLength(path):
+        if not path:
+            print("No path found")
+            return 0
         distance = 0
         for i in range(len(path) -1):
             distance += Graph.distance_point(path[i], path[i+1])
@@ -147,7 +152,7 @@ class Graph(dict):
         return (environment,polygon)
     
     @staticmethod
-    def occupancyGrid(environment, show = False, block=False):
+    def occupancyGrid(environment, show = False, block=True):
         grid=np.zeros([int(environment[0][0]*4),int(environment[0][1]*4)])
         for poly in environment[1]:
             minX=Graph.min_list(poly,0)
