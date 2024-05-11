@@ -45,14 +45,14 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env_file = "environments/environment3.txt"
+    env_file = "environments/environment4.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
 
     env = Graph.createEnvironment(env_file)
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
-    end=(19,28)
+    end=(28,28)
     radius=.5
     ax.set_title(env_name.upper()[:-1] + " " + env_num)
 
@@ -68,13 +68,15 @@ if __name__=="__main__":
     t1 = path_time - start_time
     t2 = find_path_time - path_time
     total_runtime = t2+t1
-    num_nodes = len(graph)
+    num_nodes_path=len(path)
+    num_nodes_graph = len(graph)
     
     print(f"Time to get from start point to end point: {t1}")
     print(f"Time to find path: {t2}")
     print(f"Total runtime: {total_runtime}")
     print(f"Total distance: {distance}")
-    print(f"Number of nodes in graph: {num_nodes}")
+    print(f"Number of nodes in path: {num_nodes_path}")
+    print(f"Number of nodes in graph: {num_nodes_graph}")
 
     graph.showGraph(path, ax, show=True)
     # print(graph)
