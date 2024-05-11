@@ -5,7 +5,7 @@ from graph import Graph
 import numpy as np
 from numpy import random
 import matplotlib.pyplot as plt
-
+import time
 def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_number = 500):
     # initialize graphs
     start_graph=Graph(start_point=start_point)
@@ -55,26 +55,54 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
             # swap graphs
             current_graph = start_graph if current_graph is not start_graph else end_graph
             
-    if path_found:
-        path = Graph.joinGraphs(start_graph, end_graph, start_point, end_point, merge_point)
+    # if path_found:
+    #     path = Graph.joinGraphs(start_graph, end_graph, start_point, end_point, merge_point)
 
-    return start_graph, end_graph, path, path_found
+    return start_graph, end_graph, path_found, merge_point
 
 if __name__=="__main__":
-    env_file = "environments/environment2.txt"
+    env_file = "environments/environment1.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
-
+    start_end_dict = {"1": [(1,1), (28,28)],    
+                      "2": [(1,1), (20,28)],
+                      "3": [(1,1), (19,28)],
+                      "4": [(1,1), (28,28)],
+                      "5": [(1,1), (20,15)]}
+    
     env = Graph.createEnvironment(env_file)
     grid, ax=Graph.occupancyGrid(env, show=False)
-    start=(1,1)
-    end=(28,28)
+    start= start_end_dict[env_num][0]
+    end= start_end_dict[env_num][1]
     radius=.5
-    num_iterations = 500
-    start_graph, end_graph, path, path_found =plan_path(start,end,radius,grid, num_iterations)
+    ax.set_title(env_name.upper()[:-1] + " " + env_num)
+
+    num_iterations = 2000
+    start_time = time.perf_counter()
+    start_graph, end_graph, path_found, merge_point =plan_path(start,end,radius,grid, num_iterations)
+    path_time = time.perf_counter()
+
+    path = Graph.joinGraphs(start_graph, end_graph, start, end, merge_point)
+    find_path_time = time.perf_counter()
+
+
     if not path_found:
         print(f'No path found after {num_iterations} iterations')
+    else:
+        distance = (Graph.getPathLength(path))
+        
 
+    t1 = path_time - start_time
+    t2 = find_path_time - path_time
+    total_runtime = t2+t1
+    num_nodes = len(start_graph) + len(end_graph)
+    path_nodes = len(path)
+    
+    print(f"Time to get from start point to end point: {t1}")
+    print(f"Time to find path: {t2}")
+    print(f"Total runtime: {total_runtime}")
+    print(f"Total distance: {distance}")
+    print(f"Number of nodes in graph: {num_nodes}")
     ax.set_title(env_name.upper()[:-1] + " " + env_num)
     start_graph.showGraph(ax =ax, show=False, node_color = 'go')
     end_graph.showGraph(path, ax, show=True, node_color= 'bo')
