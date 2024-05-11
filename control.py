@@ -72,15 +72,15 @@ if __name__=="__main__":
     t1 = path_time - start_time
     t2 = find_path_time - path_time
     total_runtime = t2+t1
-    num_nodes = len(graph)
-    path_nodes = len(path)
+    num_nodes_path=len(path)
+    num_nodes_graph = len(graph)
     
     print(f"Time to get from start point to end point: {t1}")
     print(f"Time to find path: {t2}")
     print(f"Total runtime: {total_runtime}")
     print(f"Total distance: {distance}")
-    print(f"Number of nodes in path: {path_nodes}")
-    print(f"Number of nodes in graph: {num_nodes}")
+    print(f"Number of nodes in path: {num_nodes_path}")
+    print(f"Number of nodes in graph: {num_nodes_graph}")
 
     graph.showGraph(path, ax, show=True)
     # print(graph)

@@ -4,6 +4,7 @@ import numpy as np
 class Graph(dict):
     def __init__(self, start_point = None):
         if start_point:
+            self.start=start_point
             self[start_point] = [0,[]]
             self["parents"] = {start_point:None}
         
@@ -47,6 +48,18 @@ class Graph(dict):
                 nearest=k
                 distance=Graph.distance_point(point,k)
         return nearest
+
+    def BFS_first(self, point,grid,radius):
+        visited=[]
+        to_visit=[self.start]
+        while len(to_visit)>0:
+            if Graph.clear_path(grid,to_visit[0],point,radius):
+                return to_visit[0]
+            to_visit.extend([c for c in self[to_visit[0]][1] if c not in visited and c not in to_visit])
+            visited.append(to_visit[0])
+            to_visit.pop(0)
+        return None
+
 
     def showGraph(self, path = None, ax = None, node_color = 'go',show= False):
         if not ax:
