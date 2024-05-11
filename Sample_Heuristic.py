@@ -24,6 +24,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
         # if all of the graph is already attempted the limit number just choice a pure random point
         if near_end==None:
             new_position = (random.choice(valuesX),random.choice(valuesY))
+            near_end=graph.nearest_point(new_position)
         else:
             graph[near_end][0]+=1
             #print(near_end,graph[near_end][0])
@@ -44,14 +45,14 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
             new_position = (random.choice(valuesX[x_start:x_end]),random.choice(valuesY[y_start:y_end]))
         if new_position in graph or Graph.in_obstacle(environment_grid,new_position,robot_radius):
             continue
-        nearest=graph.nearest_point(new_position)
+        #nearest=graph.nearest_point(new_position)
 
-        if Graph.clear_path(environment_grid,new_position,nearest,robot_radius):
-            graph[nearest][1].append(new_position)
+        if Graph.clear_path(environment_grid,new_position,near_end,robot_radius):
+            graph[near_end][1].append(new_position)
             if new_position not in graph:
                 graph[new_position]=[0,[]]
-                graph['parents'][new_position] = nearest
-            graph[new_position][1].append(nearest)
+                graph['parents'][new_position] = near_end
+            graph[new_position][1].append(near_end)
 
             # check if clear path from most recent point to end point
             if Graph.clear_path(environment_grid, end_point, new_position, robot_radius):
