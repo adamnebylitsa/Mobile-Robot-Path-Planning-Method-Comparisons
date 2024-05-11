@@ -55,12 +55,12 @@ if __name__=="__main__":
     radius=.5
     ax.set_title(env_name.upper()[:-1] + " " + env_num)
 
-    start_time = time.time()
+    start_time = time.perf_counter()
     graph, path =plan_path(start,end,radius,grid, 500)
-    path_time = time.time()
-# print(path)
+
+    path_time = time.perf_counter()
     path = graph.get_path(start, end)
-    find_path_time = time.time()
+    find_path_time = time.perf_counter()
 
     distance = (Graph.getPathLength(path))
 
