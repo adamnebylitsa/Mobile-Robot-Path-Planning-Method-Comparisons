@@ -45,7 +45,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env_file = "environments/environment2.txt"
+    env_file = "environments/environment5.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
     start_end_dict = {"1": [(1,1), (28,28)],
@@ -75,8 +75,8 @@ if __name__=="__main__":
     num_nodes_path=len(path)
     num_nodes_graph = len(graph)
     
-    print(f"Time to get from start point to end point: {t1}")
-    print(f"Time to find path: {t2}")
+    # print(f"Time to get from start point to end point: {t1}")
+    # print(f"Time to find path: {t2}")
     print(f"Total runtime: {total_runtime}")
     print(f"Total distance: {distance}")
     print(f"Number of nodes in path: {num_nodes_path}")

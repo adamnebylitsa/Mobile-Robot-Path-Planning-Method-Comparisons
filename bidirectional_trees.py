@@ -25,8 +25,8 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
         count+=1
         
         new_position = (random.choice(valuesX),random.choice(valuesY))
-        if count%100 == 0:
-            print("iteration count: {count}")
+        # if count%100 == 0:
+            # print(f"iteration count: {count}")
 
         if Graph.in_obstacle(environment_grid,new_position,robot_radius):
             continue
@@ -61,7 +61,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return start_graph, end_graph, path_found, merge_point
 
 if __name__=="__main__":
-    env_file = "environments/environment1.txt"
+    env_file = "environments/environment5.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
     start_end_dict = {"1": [(1,1), (28,28)],    
@@ -98,10 +98,11 @@ if __name__=="__main__":
     num_nodes = len(start_graph) + len(end_graph)
     path_nodes = len(path)
     
-    print(f"Time to get from start point to end point: {t1}")
-    print(f"Time to find path: {t2}")
+    # print(f"Time to get from start point to end point: {t1}")
+    # print(f"Time to find path: {t2}")
     print(f"Total runtime: {total_runtime}")
     print(f"Total distance: {distance}")
+    print(f"Number of nodes in path: {path_nodes}")
     print(f"Number of nodes in graph: {num_nodes}")
     ax.set_title(env_name.upper()[:-1] + " " + env_num)
     start_graph.showGraph(ax =ax, show=False, node_color = 'go')
