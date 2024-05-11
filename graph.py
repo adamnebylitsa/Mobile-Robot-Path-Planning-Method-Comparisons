@@ -14,6 +14,9 @@ class Graph(dict):
         return len(list(self.keys()))-1
         
     def get_path(self, start_point, end_point, local_bias=False):
+        if self['parents'][end_point] is None:
+            print("Path not found")
+            return None
         path = [end_point]
         current_point = end_point
         while current_point != start_point:

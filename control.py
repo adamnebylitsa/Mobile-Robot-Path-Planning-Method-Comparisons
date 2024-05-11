@@ -34,6 +34,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
                 if end_point not in graph:
                     graph[end_point] = [0,[]]
                     graph["parents"][end_point] = new_position
+                    print(graph["parents"][end_point])
                 graph[end_point][1].append(new_position)
                 path_found = True
                 break
@@ -44,19 +45,19 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env_file = "environments/environment1.txt"
+    env_file = "environments/environment3.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
 
     env = Graph.createEnvironment(env_file)
     grid, ax=Graph.occupancyGrid(env, show=False)
     start=(1,1)
-    end=(28,28)
+    end=(19,28)
     radius=.5
     ax.set_title(env_name.upper()[:-1] + " " + env_num)
 
     start_time = time.perf_counter()
-    graph, path =plan_path(start,end,radius,grid, 500)
+    graph, path =plan_path(start,end,radius,grid, 2000)
 
     path_time = time.perf_counter()
     path = graph.get_path(start, end)
@@ -77,3 +78,4 @@ if __name__=="__main__":
 
     graph.showGraph(path, ax, show=True)
     # print(graph)
+
