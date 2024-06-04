@@ -3,7 +3,6 @@ import numpy as np
 from numpy import random
 import time
 
-# might switch which technique this is for based on what we think for the third case
 
 def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_number = 500,attempts=10):
     # initialize graph
@@ -70,7 +69,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return graph, path
 
 if __name__=="__main__":
-    env_file = "environments/environment5.txt"
+    env_file = "environments/environment4.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
 
@@ -84,7 +83,7 @@ if __name__=="__main__":
     start= start_end_dict[env_num][0]
     end= start_end_dict[env_num][1]
     radius=.5
-    ax.set_title(env_name.upper()[:-1] + " " + env_num)
+    ax.set_title(env_name.upper()[:-1] + " " + env_num + " Sampling Heuristic")
 
     start_time = time.perf_counter()
     graph, path =plan_path(start,end,radius,grid, 2000)

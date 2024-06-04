@@ -6,6 +6,7 @@ import numpy as np
 from numpy import random
 import matplotlib.pyplot as plt
 import time
+
 def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_number = 500):
     # initialize graphs
     start_graph=Graph(start_point=start_point)
@@ -61,7 +62,7 @@ def plan_path(start_point,end_point,robot_radius,environment_grid, iteration_num
     return start_graph, end_graph, path_found, merge_point
 
 if __name__=="__main__":
-    env_file = "environments/environment5.txt"
+    env_file = "environments/environment3.txt"
     env_name = env_file.split('/')[1].split('.')[0].upper().split(".")[0]
     env_num = env_name[-1]
     start_end_dict = {"1": [(1,1), (28,28)],    
@@ -104,6 +105,6 @@ if __name__=="__main__":
     print(f"Total distance: {distance}")
     print(f"Number of nodes in path: {path_nodes}")
     print(f"Number of nodes in graph: {num_nodes}")
-    ax.set_title(env_name.upper()[:-1] + " " + env_num)
+    ax.set_title(env_name.upper()[:-1] + " " + env_num + " Bi-directional Method")
     start_graph.showGraph(ax =ax, show=False, node_color = 'go')
     end_graph.showGraph(path, ax, show=True, node_color= 'bo')
