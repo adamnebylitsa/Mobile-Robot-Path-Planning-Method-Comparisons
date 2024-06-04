@@ -11,6 +11,8 @@ This project aims to improve the performance of the standard RRT planner by alte
 ## Environments
 The simulations are run in environments created from text files, which define obstacles and boundaries within a grid. Each environment is converted into an occupancy grid, where each cell represents a potential space for navigation.
 
+![image](https://github.com/adamnebylitsa/Mobile-Robot-Path-Planning-Method-Comparisons/assets/84944416/0be01557-71d2-473d-bc5b-443f1bf949b0)
+
 ## Data and Reports 
 For a more detailed analysis, including the comparative analysis of each method:
 - [Project Report](https://docs.google.com/document/d/1uXCafIOUeDR7brnZ9s860canGNX_OtaCnkBKx8aKYig/edit?usp=sharing)
